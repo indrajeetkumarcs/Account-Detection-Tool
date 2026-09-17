@@ -3,6 +3,16 @@
 // COMPLETE MAIN SCRIPT - UPDATED VERSION
 // ==========================================
 
+// ==========================================
+// VERCEL BACKEND CONFIGURATION
+// ==========================================
+
+// Backend deploy hone ke baad yahan apna Vercel Backend URL paste karna hai.
+// Example:
+// const API_BASE_URL = "https://your-backend.vercel.app";
+
+const API_BASE_URL = "https://YOUR-BACKEND-VERCEL-URL.vercel.app";
+
 
 // ==========================================
 // HOME PAGE - START DETECTION BUTTON
@@ -42,7 +52,10 @@ if (
     dashboardLowRisk
 ) {
 
-    fetch(`${API_BASE_URL}/predict`)
+fetch(`${API_BASE_URL}/dashboard-stats`, {
+    method: "GET",
+    cache: "no-store"
+})
 
         .then(function(response) {
 
@@ -317,39 +330,27 @@ if (detectionForm) {
                 // SEND DATA TO PYTHON BACKEND
                 // ==========================================
 
-                const response = await fetch(`${API_BASE_URL}/predict`, {
+const response = await fetch(`${API_BASE_URL}/predict`, {
     method: "POST",
+
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify(accountData)
+
+    body: JSON.stringify({
+        username: username,
+        followers: followers,
+        following: following,
+        posts: posts,
+        accountAge: accountAge,
+        averageLikes: averageLikes,
+        averageComments: averageComments,
+        engagement: engagement,
+        profilePicture: profilePicture,
+        bio: bio,
+        verified: verified
+    })
 });
-                            body: JSON.stringify({
-
-                                username: username,
-
-                                followers: followers,
-
-                                following: following,
-
-                                posts: posts,
-
-                                accountAge: accountAge,
-
-                                averageLikes: averageLikes,
-
-                                averageComments: averageComments,
-
-                                engagement: engagement,
-
-                                profilePicture: profilePicture,
-
-                                bio: bio,
-
-                                verified: verified
-                            })
-                        }
-                    );
 
 
                 const mlResult =
@@ -1398,7 +1399,10 @@ const analyticTotal =
 
 if (analyticTotal) {
 
-    fetch(`${API_BASE_URL}/predict`)
+    fetch(`${API_BASE_URL}/dashboard-stats`, {
+    method: "GET",
+    cache: "no-store"
+})
         .then(function(response) {
 
             if (!response.ok) {
@@ -2015,7 +2019,10 @@ if (
     typeof Chart !== "undefined"
 ) {
 
-    fetch(`${API_BASE_URL}/predict`, {
+    fetch(`${API_BASE_URL}/dashboard-stats`, {
+    method: "GET",
+    cache: "no-store"
+}), {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -2273,7 +2280,7 @@ const detectionTrendCanvas =
 // LOAD DETECTION HISTORY FROM MYSQL
 // ==========================================
 
-fetch(`${API_BASE_URL}/predict`), {
+fetch(`${API_BASE_URL}/dashboard-history`, {
     method: "GET",
     cache: "no-store"
 })
