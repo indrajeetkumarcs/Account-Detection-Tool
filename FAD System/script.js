@@ -317,20 +317,13 @@ if (detectionForm) {
                 // SEND DATA TO PYTHON BACKEND
                 // ==========================================
 
-                const response =
-                    await fetch(
-                        "http://127.0.0.1:5000/predict",
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
+                const response = await fetch(`${API_BASE_URL}/predict`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(accountData)
+});
                             body: JSON.stringify({
 
                                 username: username,
@@ -2022,13 +2015,13 @@ if (
     typeof Chart !== "undefined"
 ) {
 
-    fetch(
-        "http://127.0.0.1:5000/dashboard-stats",
-        {
-            method: "GET",
-            cache: "no-store"
-        }
-    )
+    fetch(`${API_BASE_URL}/predict`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(accountData)
+})
 
         .then(function(response) {
 
