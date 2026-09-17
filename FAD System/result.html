@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Analysis Report</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- THEME TOGGLE BUTTON -->
+
+<button id="themeToggle" class="theme-toggle">
+
+    🌙
+
+</button>
+
+    <div class="container result-container">
+
+
+        <!-- ==========================================
+             RESULT HEADER
+        =========================================== -->
+
+        <div class="result-header">
+
+            <h1>🤖 Account Analysis Report</h1>
+
+            <p>
+                Fake Social Media Account Detection System
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             RESULT STATUS
+        =========================================== -->
+
+        <div class="result-card">
+
+            <h2 id="resultTitle">
+                Account Analysis Result
+            </h2>
+
+            <p id="usernameResult">
+                Username: Not Available
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             RISK SCORE
+        =========================================== -->
+
+        <div class="score-card">
+
+            <h3>⚠️ Risk Score</h3>
+
+            <div class="score-number">
+
+                <span id="scoreValue">0</span>%
+
+            </div>
+
+
+            <!-- Progress Bar -->
+
+            <div class="progress-container">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             RISK LEVEL
+        =========================================== -->
+
+        <div class="risk-card">
+
+            <h3>🚨 Risk Level</h3>
+
+            <p id="riskLevel">
+                Not Available
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             BASIC ACCOUNT INFORMATION
+        =========================================== -->
+
+        <div class="details-section">
+
+            <h2 class="details-title">
+                👤 Basic Account Information
+            </h2>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        👤
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Username
+                        </p>
+
+                        <h3 id="detailUsername">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        👥
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Followers
+                        </p>
+
+                        <h3 id="detailFollowers">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        ➕
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Following
+                        </p>
+
+                        <h3 id="detailFollowing">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        📝
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Total Posts
+                        </p>
+
+                        <h3 id="detailPosts">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        📅
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Account Age
+                        </p>
+
+                        <h3 id="detailAccountAge">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             ACCOUNT STATISTICS
+        =========================================== -->
+
+        <div class="details-section">
+
+            <h2 class="details-title">
+                📊 Account Statistics
+            </h2>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        ❤️
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Average Likes
+                        </p>
+
+                        <h3 id="detailLikes">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        💬
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Average Comments
+                        </p>
+
+                        <h3 id="detailComments">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        📈
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Engagement Rate
+                        </p>
+
+                        <h3 id="detailEngagement">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             PROFILE INFORMATION
+        =========================================== -->
+
+        <div class="details-section">
+
+            <h2 class="details-title">
+                🖼️ Profile Information
+            </h2>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        🖼️
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Profile Picture
+                        </p>
+
+                        <h3 id="detailProfilePicture">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        📝
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Bio Available
+                        </p>
+
+                        <h3 id="detailBio">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span class="detail-icon">
+                        ✔️
+                    </span>
+
+                    <div>
+
+                        <p class="detail-label">
+                            Verified Account
+                        </p>
+
+                        <h3 id="detailVerified">
+                            -
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+     ADVANCED ACCOUNT ANALYSIS
+========================================== -->
+
+<div class="advanced-analysis-section">
+
+    <h2 class="details-title">
+        🤖 Advanced AI Analysis
+    </h2>
+
+
+    <div class="analysis-grid">
+
+
+        <div class="analysis-card">
+
+            <span class="analysis-icon">
+                🎯
+            </span>
+
+            <p>Fake Probability</p>
+
+            <h3 id="fakeProbability">
+                0%
+            </h3>
+
+        </div>
+
+
+        <div class="analysis-card">
+
+            <span class="analysis-icon">
+                🛡️
+            </span>
+
+            <p>Trust Score</p>
+
+            <h3 id="trustScore">
+                0%
+            </h3>
+
+        </div>
+
+
+        <div class="analysis-card">
+
+            <span class="analysis-icon">
+                ❤️
+            </span>
+
+            <p>Account Health</p>
+
+            <h3 id="accountHealth">
+                -
+            </h3>
+
+        </div>
+
+
+        <div class="analysis-card">
+
+            <span class="analysis-icon">
+                ⚡
+            </span>
+
+            <p>Detection Confidence</p>
+
+            <h3 id="detectionConfidence">
+                -
+            </h3>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="ai-summary-card">
+
+        <h3>
+            🧠 AI Analysis Summary
+        </h3>
+
+        <p id="aiSummary">
+
+            Account analysis will appear here.
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+        <!-- ==========================================
+             ANALYSIS REASONS
+        =========================================== -->
+
+        <div class="reasons-card">
+
+            <h3>
+                🔍 Analysis Reasons
+            </h3>
+
+            <ul id="reasonsList"></ul>
+
+        </div>
+
+
+        <!-- ==========================================
+             ACTION BUTTON
+        =========================================== -->
+
+        <div class="result-button-container">
+
+            <button id="checkAgainBtn">
+
+                🔄 Check Another Account
+
+            </button>
+
+            <button id="downloadReportBtn">
+
+                 📄 Download Detection Report
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

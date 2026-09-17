@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detection History</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- THEME TOGGLE BUTTON -->
+
+<button id="themeToggle" class="theme-toggle">
+
+    🌙
+
+</button>
+
+    <div class="container history-container">
+
+
+        <!-- HEADER -->
+
+        <div class="history-header">
+
+            <h1>📊 Detection History</h1>
+
+            <p>
+                View and manage previously analyzed accounts
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH AND FILTER SECTION -->
+
+        <div class="history-controls">
+
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="searchUsername"
+                placeholder="🔎 Search account by username..."
+            >
+
+
+            <!-- FILTER -->
+
+            <select id="riskFilter">
+
+                <option value="all">
+
+                    🌐 All Accounts
+
+                </option>
+
+                <option value="high">
+
+                    🔴 High Risk
+
+                </option>
+
+                <option value="medium">
+
+                    🟡 Medium Risk
+
+                </option>
+
+                <option value="low">
+
+                    🟢 Low Risk
+
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <!-- HISTORY TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <tr>
+
+                            <th>Username</th>
+
+                            <th>Risk Score</th>
+
+                            <th>Risk Level</th>
+
+                            <th>Date & Time</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="historyTableBody">
+
+                    <!-- JavaScript Data -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="history-buttons">
+
+            <button id="newDetectionBtn">
+
+                🔍 New Detection
+
+            </button>
+
+
+            <button id="clearHistoryBtn">
+
+                🗑️ Clear History
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

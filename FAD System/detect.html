@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Detection</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body class="detection-page">
+
+    <!-- THEME TOGGLE BUTTON -->
+
+<button id="themeToggle" class="theme-toggle">
+
+    🌙
+
+</button>
+
+    <div class="container detection-container">
+
+
+        <!-- ==========================================
+             PAGE HEADER
+        =========================================== -->
+
+        <div class="detection-header">
+
+            <h1>🔍 Account Detection</h1>
+
+            <p>
+                Enter the account details for intelligent analysis
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             DETECTION FORM
+        =========================================== -->
+
+        <form id="detectionForm">
+
+
+            <!-- ==========================================
+                 BASIC ACCOUNT INFORMATION
+            =========================================== -->
+
+            <div class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="section-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Basic Account Information
+                        </h2>
+
+                        <p>
+                            Enter the basic details of the social media account
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- USERNAME -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Enter Username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- FOLLOWERS -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Followers
+                        </label>
+
+                        <input
+                            type="number"
+                            id="followers"
+                            placeholder="Number of Followers"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- FOLLOWING -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Following
+                        </label>
+
+                        <input
+                            type="number"
+                            id="following"
+                            placeholder="Number of Following"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- POSTS -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Total Posts
+                        </label>
+
+                        <input
+                            type="number"
+                            id="posts"
+                            placeholder="Number of Posts"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ACCOUNT AGE -->
+
+                    <div class="input-group full-width">
+
+                        <label>
+                            Account Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="accountAge"
+                            placeholder="Account Age (Days)"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 ACCOUNT STATISTICS
+            =========================================== -->
+
+            <div class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="section-icon">
+                        📊
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Account Statistics
+                        </h2>
+
+                        <p>
+                            Enter the account engagement and activity statistics
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- AVERAGE LIKES -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Average Likes Per Post
+                        </label>
+
+                        <input
+                            type="number"
+                            id="averageLikes"
+                            placeholder="Enter Average Likes"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- AVERAGE COMMENTS -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Average Comments Per Post
+                        </label>
+
+                        <input
+                            type="number"
+                            id="averageComments"
+                            placeholder="Enter Average Comments"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ENGAGEMENT -->
+
+                    <div class="input-group full-width">
+
+                        <label>
+                            Engagement Rate (%)
+                        </label>
+
+                        <input
+                            type="text"
+                            id="engagement"
+                            placeholder="Automatically calculated"
+                            readonly
+                        >
+
+                        <small class="auto-calculate-text">
+                            🤖 Automatically calculated using followers, likes and comments
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 PROFILE INFORMATION
+            =========================================== -->
+
+            <div class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="section-icon">
+                        🖼️
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Profile Information
+                        </h2>
+
+                        <p>
+                            Select the available profile details
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- PROFILE PICTURE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Profile Picture Available?
+                        </label>
+
+                        <select id="profilePicture">
+
+                            <option value="yes">
+                                Yes
+                            </option>
+
+                            <option value="no">
+                                No
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BIO -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Bio Available?
+                        </label>
+
+                        <select id="bio">
+
+                            <option value="yes">
+                                Yes
+                            </option>
+
+                            <option value="no">
+                                No
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- VERIFIED -->
+
+                    <div class="input-group full-width">
+
+                        <label>
+                            Verified Account?
+                        </label>
+
+                        <select id="verified">
+
+                            <option value="no">
+                                No
+                            </option>
+
+                            <option value="yes">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 ANALYZE BUTTON
+            =========================================== -->
+
+            <button
+                type="submit"
+                class="analyze-btn"
+            >
+
+                🤖 Analyze Account
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

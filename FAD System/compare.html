@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Compare Accounts</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- THEME TOGGLE -->
+
+    <button id="themeToggle" class="theme-toggle">
+        🌙
+    </button>
+
+
+    <div class="container compare-container">
+
+
+        <!-- HEADER -->
+
+        <div class="compare-header">
+
+            <h1>
+                ⚖️ Account Comparison
+            </h1>
+
+            <p>
+                Compare two detected social media accounts
+            </p>
+
+        </div>
+
+
+        <!-- ACCOUNT SELECTION -->
+
+        <div class="compare-selection">
+
+
+            <div class="select-account-card">
+
+                <h3>
+                    👤 Select Account 1
+                </h3>
+
+                <select id="compareAccount1">
+
+                    <option value="">
+                        Select First Account
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="compare-vs">
+
+                VS
+
+            </div>
+
+
+            <div class="select-account-card">
+
+                <h3>
+                    👤 Select Account 2
+                </h3>
+
+                <select id="compareAccount2">
+
+                    <option value="">
+                        Select Second Account
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- COMPARE BUTTON -->
+
+        <div class="compare-button-container">
+
+            <button id="compareBtn">
+
+                ⚖️ Compare Accounts
+
+            </button>
+
+        </div>
+
+
+        <!-- COMPARISON RESULT -->
+
+        <div
+            id="comparisonResult"
+            class="comparison-result"
+        >
+
+            <div class="comparison-placeholder">
+
+                🔍 Select two accounts and click Compare.
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION BUTTONS -->
+
+        <div class="compare-navigation">
+
+            <button id="compareNewDetectionBtn">
+
+                ➕ New Detection
+
+            </button>
+
+
+            <button id="compareHistoryBtn">
+
+                📜 View History
+
+            </button>
+
+
+            <button id="compareHomeBtn">
+
+                🏠 Home
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

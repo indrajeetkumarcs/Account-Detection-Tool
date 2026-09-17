@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detection Analytic Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- THEME TOGGLE BUTTON -->
+
+<button id="themeToggle" class="theme-toggle">
+
+    🌙
+
+</button>
+
+    <div class="container analytic-container">
+
+
+        <!-- ==========================================
+             ANALYTIC HEADER
+        =========================================== -->
+
+        <div class="analytic-header">
+
+            <h1>📊 Detection Analytic Dashboard</h1>
+
+            <p>
+                Overview of all analyzed social media accounts
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             ANALYTIC STATISTICS
+        =========================================== -->
+
+        <div class="analytic-stats">
+
+
+            <!-- TOTAL ACCOUNTS -->
+
+            <div class="analytic-card total-card">
+
+                <div class="analytic-icon">
+                    👥
+                </div>
+
+                <h2 id="analyticTotal">
+                    0
+                </h2>
+
+                <p>
+                    Total Accounts Checked
+                </p>
+
+            </div>
+
+
+            <!-- HIGH RISK -->
+
+            <div class="analytic-card high-risk-card">
+
+                <div class="analytic-icon">
+                    🔴
+                </div>
+
+                <h2 id="analyticHigh">
+                    0
+                </h2>
+
+                <p>
+                    High Risk Accounts
+                </p>
+
+            </div>
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="analytic-card medium-risk-card">
+
+                <div class="analytic-icon">
+                    🟡
+                </div>
+
+                <h2 id="analyticMedium">
+                    0
+                </h2>
+
+                <p>
+                    Medium Risk Accounts
+                </p>
+
+            </div>
+
+
+            <!-- LOW RISK -->
+
+            <div class="analytic-card low-risk-card">
+
+                <div class="analytic-icon">
+                    🟢
+                </div>
+
+                <h2 id="analyticLow">
+                    0
+                </h2>
+
+                <p>
+                    Low Risk Accounts
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             RISK DISTRIBUTION
+        =========================================== -->
+
+        <div class="analytic-section">
+
+            <h2>
+                📈 Risk Distribution
+            </h2>
+
+
+            <div class="distribution-container">
+
+
+                <div class="distribution-item">
+
+                    <div class="distribution-label">
+
+                        <span>
+                            🔴 High Risk
+                        </span>
+
+                        <span id="highPercentage">
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-bar">
+
+                        <div
+                            id="highBar"
+                            class="distribution-progress high-progress"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="distribution-item">
+
+                    <div class="distribution-label">
+
+                        <span>
+                            🟡 Medium Risk
+                        </span>
+
+                        <span id="mediumPercentage">
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-bar">
+
+                        <div
+                            id="mediumBar"
+                            class="distribution-progress medium-progress"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="distribution-item">
+
+                    <div class="distribution-label">
+
+                        <span>
+                            🟢 Low Risk
+                        </span>
+
+                        <span id="lowPercentage">
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-bar">
+
+                        <div
+                            id="lowBar"
+                            class="distribution-progress low-progress"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             RECENT DETECTION
+        =========================================== -->
+
+        <div class="analytic-section recent-section">
+
+            <h2>
+                🕒 Most Recent Detection
+            </h2>
+
+
+            <div id="recentDetection">
+
+                <p class="no-data-message">
+                    No detection data available yet.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+     ANALYTIC CHARTS
+========================================== -->
+
+<div class="charts-section">
+
+    <h2>
+        📊 Detection Analytic Charts
+    </h2>
+
+
+    <div class="charts-grid">
+
+
+        <!-- RISK DISTRIBUTION -->
+
+        <div class="chart-card">
+
+            <h3>
+                🥧 Risk Distribution
+            </h3>
+
+            <canvas id="riskDistributionChart"></canvas>
+
+        </div>
+
+
+        <!-- RISK COMPARISON -->
+
+        <div class="chart-card">
+
+            <h3>
+                📊 Risk Comparison
+            </h3>
+
+            <canvas id="riskComparisonChart"></canvas>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- DETECTION TREND -->
+
+    <div class="chart-card trend-chart">
+
+        <h3>
+            📈 Recent Detection Trend
+        </h3>
+
+        <canvas id="detectionTrendChart"></canvas>
+
+    </div>
+
+</div>
+
+
+        <!-- ==========================================
+             ACTION BUTTONS
+        =========================================== -->
+
+        <div class="analytic-buttons">
+
+            <button id="analyticNewDetectionBtn">
+
+                🔍 New Detection
+
+            </button>
+
+
+            <button id="analyticHistoryBtn">
+
+                📋 View Detection History
+
+            </button>
+
+
+            <button id="analyticHomeBtn">
+
+                🏠 Back to Home
+
+            </button>
+
+            <button id="openCompareBtn">
+                ⚖️ Compare Accounts
+            </button>
+
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
