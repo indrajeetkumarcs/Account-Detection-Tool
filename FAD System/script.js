@@ -36,83 +36,82 @@ if (startBtn) {
 // MYSQL VERSION
 // ==========================================
 
-const dashboardTotal =
-    document.getElementById("totalAccounts");
+const dashboardStats = document.getElementById("dashboardStats");
 
-const dashboardHighRisk =
-    document.getElementById("highRiskAccounts");
+if (dashboardStats) {
 
-const dashboardLowRisk =
-    document.getElementById("lowRiskAccounts");
+    fetch(`${API_BASE_URL}/dashboard-stats`, {
+        method: "GET",
+        cache: "no-store"
+    })
 
-
-if (
-    dashboardTotal ||
-    dashboardHighRisk ||
-    dashboardLowRisk
-) {
-
-fetch(`${API_BASE_URL}/dashboard-stats`, {
-    method: "GET",
-    cache: "no-store"
-})
-
-        .then(function(response) {
+        .then(response => {
 
             if (!response.ok) {
-                throw new Error(
-                    "Dashboard API error: " +
-                    response.status
-                );
+                throw new Error("Dashboard Stats API Error: " + response.status);
             }
 
             return response.json();
-        })
-
-        .then(function(data) {
-
-            if (!data.success) {
-
-                throw new Error(
-                    data.error ||
-                    "Unable to load dashboard statistics."
-                );
-
-            }
-
-
-            // TOTAL ACCOUNTS
-            if (dashboardTotal) {
-
-                dashboardTotal.innerText =
-                    data.total;
-
-            }
-
-
-            // HIGH RISK
-            if (dashboardHighRisk) {
-
-                dashboardHighRisk.innerText =
-                    data.highRisk;
-
-            }
-
-
-            // LOW RISK
-            if (dashboardLowRisk) {
-
-                dashboardLowRisk.innerText =
-                    data.lowRisk;
-
-            }
 
         })
 
-        .catch(function(error) {
+        .then(data => {
+
+            const totalAccounts =
+                document.getElementById("totalAccounts");
+
+            const fakeAccounts =
+                document.getElementById("fakeAccounts");
+
+            const genuineAccounts =
+                document.getElementById("genuineAccounts");
+
+            const highRisk =
+                document.getElementById("highRisk");
+
+            const mediumRisk =
+                document.getElementById("mediumRisk");
+
+            const lowRisk =
+                document.getElementById("lowRisk");
+
+
+            if (totalAccounts) {
+                totalAccounts.textContent =
+                    data.totalAccounts ?? 0;
+            }
+
+            if (fakeAccounts) {
+                fakeAccounts.textContent =
+                    data.fakeAccounts ?? 0;
+            }
+
+            if (genuineAccounts) {
+                genuineAccounts.textContent =
+                    data.genuineAccounts ?? 0;
+            }
+
+            if (highRisk) {
+                highRisk.textContent =
+                    data.highRisk ?? 0;
+            }
+
+            if (mediumRisk) {
+                mediumRisk.textContent =
+                    data.mediumRisk ?? 0;
+            }
+
+            if (lowRisk) {
+                lowRisk.textContent =
+                    data.lowRisk ?? 0;
+            }
+
+        })
+
+        .catch(error => {
 
             console.error(
-                "Dashboard Error:",
+                "Dashboard Statistics Error:",
                 error
             );
 
@@ -120,936 +119,1287 @@ fetch(`${API_BASE_URL}/dashboard-stats`, {
 
 }
 
-// ==========================================
-// AUTOMATIC ENGAGEMENT CALCULATOR
-// ==========================================
-
-const followersInput =
-    document.getElementById("followers");
-
-const averageLikesInput =
-    document.getElementById("averageLikes");
-
-const averageCommentsInput =
-    document.getElementById("averageComments");
-
-const engagementInput =
-    document.getElementById("engagement");
-
-
-function calculateEngagement() {
-
-    if (
-        !followersInput ||
-        !averageLikesInput ||
-        !averageCommentsInput ||
-        !engagementInput
-    ) {
-
-        return;
-
-    }
-
-
-    const followers =
-        Number(followersInput.value) || 0;
-
-    const likes =
-        Number(averageLikesInput.value) || 0;
-
-    const comments =
-        Number(averageCommentsInput.value) || 0;
-
-
-    if (followers > 0) {
-
-        const engagement =
-            ((likes + comments) / followers) * 100;
-
-
-        engagementInput.value =
-            engagement.toFixed(2);
-
-    }
-
-    else {
-
-        engagementInput.value = "";
-
-    }
-
-}
-
 
 // ==========================================
-// AUTO CALCULATION EVENTS
-// ==========================================
-
-if (followersInput) {
-
-    followersInput.addEventListener(
-        "input",
-        calculateEngagement
-    );
-
-}
-
-
-if (averageLikesInput) {
-
-    averageLikesInput.addEventListener(
-        "input",
-        calculateEngagement
-    );
-
-}
-
-
-if (averageCommentsInput) {
-
-    averageCommentsInput.addEventListener(
-        "input",
-        calculateEngagement
-    );
-
-}
-
-
-// ==========================================
-// DETECTION PAGE - ACCOUNT ANALYSIS
-// ==========================================
-
-// ==========================================
-// DETECTION PAGE - ML ACCOUNT ANALYSIS
+// DETECTION FORM
 // ==========================================
 
 const detectionForm =
     document.getElementById("detectionForm");
 
-
 if (detectionForm) {
 
-    detectionForm.addEventListener(
-        "submit",
-        async function (event) {
+    detectionForm.addEventListener("submit", async function (event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
 
-            // ==========================================
-            // GET FORM VALUES
-            // ==========================================
+        // ==========================================
+        // GET FORM VALUES
+        // ==========================================
 
-            const username =
-                document.getElementById("username")
-                    .value
-                    .trim();
+        const username =
+            document.getElementById("username")?.value.trim();
 
+        const followers =
+            Number(
+                document.getElementById("followers")?.value || 0
+            );
 
-            const followers =
-                Number(
-                    document.getElementById("followers").value
-                );
+        const following =
+            Number(
+                document.getElementById("following")?.value || 0
+            );
 
+        const posts =
+            Number(
+                document.getElementById("posts")?.value || 0
+            );
 
-            const following =
-                Number(
-                    document.getElementById("following").value
-                );
+        const accountAge =
+            Number(
+                document.getElementById("accountAge")?.value || 0
+            );
 
+        const averageLikes =
+            Number(
+                document.getElementById("averageLikes")?.value || 0
+            );
 
-            const posts =
-                Number(
-                    document.getElementById("posts").value
-                );
-
-
-            const accountAge =
-                Number(
-                    document.getElementById("accountAge").value
-                );
-
-
-            const averageLikes =
-                Number(
-                    document.getElementById("averageLikes").value
-                );
+        const averageComments =
+            Number(
+                document.getElementById("averageComments")?.value || 0
+            );
 
 
-            const averageComments =
-                Number(
-                    document.getElementById("averageComments").value
-                );
+        // ==========================================
+        // PROFILE PICTURE
+        // ==========================================
+
+        const profilePictureElement =
+            document.querySelector(
+                'input[name="profilePicture"]:checked'
+            );
+
+        const profilePicture =
+            profilePictureElement
+                ? profilePictureElement.value
+                : "no";
 
 
-            const engagement =
-                Number(
-                    document.getElementById("engagement").value
-                );
+        // ==========================================
+        // BIO
+        // ==========================================
+
+        const bioElement =
+            document.querySelector(
+                'input[name="bio"]:checked'
+            );
+
+        const bio =
+            bioElement
+                ? bioElement.value
+                : "no";
 
 
-            const profilePicture =
-                document.getElementById("profilePicture").value;
+        // ==========================================
+        // VERIFIED
+        // ==========================================
+
+        const verifiedElement =
+            document.querySelector(
+                'input[name="verified"]:checked'
+            );
+
+        const verified =
+            verifiedElement
+                ? verifiedElement.value
+                : "no";
 
 
-            const bio =
-                document.getElementById("bio").value;
+        // ==========================================
+        // AUTOMATIC ENGAGEMENT CALCULATION
+        // ==========================================
+
+        let engagement = 0;
+
+        if (followers > 0) {
+
+            engagement =
+                (
+                    (
+                        averageLikes +
+                        averageComments
+                    ) /
+                    followers
+                ) * 100;
+
+        }
+
+        engagement =
+            Number(engagement.toFixed(2));
 
 
-            const verified =
-                document.getElementById("verified").value;
+        // ==========================================
+        // BASIC VALIDATION
+        // ==========================================
+
+        if (!username) {
+
+            alert("Please enter username.");
+
+            return;
+
+        }
 
 
-            // ==========================================
-            // GET SUBMIT BUTTON
-            // ==========================================
+        // ==========================================
+        // LOADING MESSAGE
+        // ==========================================
 
-            const submitButton =
-                detectionForm.querySelector(
-                    'button[type="submit"]'
-                );
+        const submitButton =
+            detectionForm.querySelector(
+                'button[type="submit"]'
+            );
 
-
-            const originalButtonText =
-                submitButton.innerHTML;
-
-
-            // ==========================================
-            // LOADING STATE
-            // ==========================================
+        if (submitButton) {
 
             submitButton.disabled = true;
 
-            submitButton.innerHTML =
-                "🤖 Analyzing with AI...";
+            submitButton.textContent =
+                "Analyzing...";
 
+        }
 
-            try {
 
-                // ==========================================
-                // SEND DATA TO PYTHON BACKEND
-                // ==========================================
+        try {
 
-const response = await fetch(`${API_BASE_URL}/predict`, {
-    method: "POST",
+            // ==========================================
+            // SEND DATA TO FLASK / VERCEL BACKEND
+            // ==========================================
 
-    headers: {
-        "Content-Type": "application/json"
-    },
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/predict`,
+                    {
+                        method: "POST",
 
-    body: JSON.stringify({
-        username: username,
-        followers: followers,
-        following: following,
-        posts: posts,
-        accountAge: accountAge,
-        averageLikes: averageLikes,
-        averageComments: averageComments,
-        engagement: engagement,
-        profilePicture: profilePicture,
-        bio: bio,
-        verified: verified
-    })
-});
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
+                        body: JSON.stringify({
 
-                const mlResult =
-                    await response.json();
+                            username:
+                                username,
 
+                            followers:
+                                followers,
 
-                // ==========================================
-                // CHECK API RESPONSE
-                // ==========================================
+                            following:
+                                following,
 
-                if (!mlResult.success) {
+                            posts:
+                                posts,
 
-                    throw new Error(
-                        mlResult.error ||
-                        "Prediction failed"
-                    );
+                            accountAge:
+                                accountAge,
 
-                }
+                            averageLikes:
+                                averageLikes,
 
+                            averageComments:
+                                averageComments,
 
-                // ==========================================
-                // CREATE RISK SCORE
-                // ==========================================
+                            engagement:
+                                engagement,
 
-                let score =
-                    Math.round(
-                        mlResult.confidence
-                    );
+                            profilePicture:
+                                profilePicture,
 
+                            bio:
+                                bio,
 
-                // ==========================================
-                // CREATE REASONS
-                // ==========================================
+                            verified:
+                                verified
 
-                let reasons = [];
-
-
-                if (followers < 100 && following > 1000) {
-
-                    reasons.push(
-                        "Low followers compared to very high following"
-                    );
-
-                }
-
-
-                if (posts < 5) {
-
-                    reasons.push(
-                        "Very low number of posts"
-                    );
-
-                }
-
-
-                if (accountAge < 30) {
-
-                    reasons.push(
-                        "Account is very new"
-                    );
-
-                }
-
-
-                if (engagement < 1) {
-
-                    reasons.push(
-                        "Very low engagement rate"
-                    );
-
-                }
-
-
-                if (profilePicture === "no") {
-
-                    reasons.push(
-                        "No profile picture available"
-                    );
-
-                }
-
-
-                if (bio === "no") {
-
-                    reasons.push(
-                        "No bio information available"
-                    );
-
-                }
-
-
-                if (averageLikes < 10) {
-
-                    reasons.push(
-                        "Very low average likes"
-                    );
-
-                }
-
-
-                if (averageComments < 2) {
-
-                    reasons.push(
-                        "Very low average comments"
-                    );
-
-                }
-
-
-                if (verified === "yes") {
-
-                    reasons.push(
-                        "Verified account detected"
-                    );
-
-                }
-
-
-                if (reasons.length === 0) {
-
-                    reasons.push(
-                        "No major suspicious activity detected by the system"
-                    );
-
-                }
-
-
-                // ==========================================
-                // CREATE COMPLETE DETECTION RECORD
-                // ==========================================
-
-                const detectionRecord = {
-
-                    username: username,
-
-                    followers: followers,
-
-                    following: following,
-
-                    posts: posts,
-
-                    accountAge: accountAge,
-
-                    averageLikes: averageLikes,
-
-                    averageComments: averageComments,
-
-                    engagement: engagement,
-
-                    profilePicture: profilePicture,
-
-                    bio: bio,
-
-                    verified: verified,
-
-
-                    // ML RESULTS
-
-                    score: score,
-
-                    result: mlResult.result,
-
-                    riskLevel: mlResult.riskLevel,
-
-                    prediction:
-                        mlResult.prediction,
-
-                    confidence:
-                        mlResult.confidence,
-
-                    reasons: reasons,
-
-                    dateTime:
-                        new Date().toLocaleString()
-
-                };
-
-
-                // ==========================================
-                // SAVE CURRENT RESULT
-                // ==========================================
-
-                localStorage.setItem(
-
-                    "selectedAccount",
-
-                    JSON.stringify(detectionRecord)
-
+                        })
+                    }
                 );
 
 
-                // ==========================================
-                // SAVE DETECTION HISTORY
-                // ==========================================
+            // ==========================================
+            // CHECK RESPONSE
+            // ==========================================
 
-                let history =
+            if (!response.ok) {
 
-                    JSON.parse(
+                const errorText =
+                    await response.text();
 
-                        localStorage.getItem(
-                            "detectionHistory"
-                        )
-
-                    ) || [];
-
-
-                history.unshift(
-                    detectionRecord
+                throw new Error(
+                    "Prediction API Error: " +
+                    response.status +
+                    " - " +
+                    errorText
                 );
-
-
-                localStorage.setItem(
-
-                    "detectionHistory",
-
-                    JSON.stringify(history)
-
-                );
-
-
-                // ==========================================
-                // OPEN RESULT PAGE
-                // ==========================================
-
-                window.location.href =
-                    "result.html";
-
 
             }
 
-            catch (error) {
 
-                console.error(error);
+            const result =
+                await response.json();
 
 
-                alert(
+            // ==========================================
+            // SAVE RESULT FOR RESULT PAGE
+            // ==========================================
 
-                    "❌ Unable to connect with AI Detection Server.\n\n" +
+            const account = {
 
-                    "Make sure Python Flask server is running!"
+                username:
+                    username,
 
-                );
+                followers:
+                    followers,
 
+                following:
+                    following,
+
+                posts:
+                    posts,
+
+                accountAge:
+                    accountAge,
+
+                averageLikes:
+                    averageLikes,
+
+                averageComments:
+                    averageComments,
+
+                engagement:
+                    engagement,
+
+                profilePicture:
+                    profilePicture,
+
+                bio:
+                    bio,
+
+                verified:
+                    verified,
+
+                prediction:
+                    result.prediction,
+
+                score:
+                    Number(
+                        result.confidence ??
+                        result.fakeProbability ??
+                        0
+                    ),
+
+                fakeProbability:
+                    Number(
+                        result.fakeProbability ??
+                        result.confidence ??
+                        0
+                    ),
+
+                genuineProbability:
+                    Number(
+                        result.genuineProbability ??
+                        (
+                            100 -
+                            Number(
+                                result.fakeProbability ??
+                                result.confidence ??
+                                0
+                            )
+                        )
+                    ),
+
+                risk:
+                    result.risk,
+
+                reasons:
+                    result.reasons || [],
+
+                databaseSaved:
+                    result.databaseSaved ?? false
+
+            };
+
+
+            // ==========================================
+            // RISK CLASSIFICATION
+            // ==========================================
+
+            const fakeScore =
+                Number(account.fakeProbability);
+
+
+            if (fakeScore >= 70) {
+
+                account.risk =
+                    "HIGH RISK";
+
+            }
+
+            else if (fakeScore >= 40) {
+
+                account.risk =
+                    "MEDIUM RISK";
+
+            }
+
+            else {
+
+                account.risk =
+                    "LOW RISK";
+
+            }
+
+
+            // ==========================================
+            // SAVE SELECTED ACCOUNT
+            // ==========================================
+
+            localStorage.setItem(
+                "selectedAccount",
+                JSON.stringify(account)
+            );
+
+
+            // ==========================================
+            // SAVE DETECTION HISTORY
+            // ==========================================
+
+            let detectionHistory =
+                JSON.parse(
+                    localStorage.getItem(
+                        "detectionHistory"
+                    )
+                ) || [];
+
+
+            detectionHistory.unshift({
+
+                username:
+                    account.username,
+
+                followers:
+                    account.followers,
+
+                following:
+                    account.following,
+
+                posts:
+                    account.posts,
+
+                accountAge:
+                    account.accountAge,
+
+                averageLikes:
+                    account.averageLikes,
+
+                averageComments:
+                    account.averageComments,
+
+                engagement:
+                    account.engagement,
+
+                profilePicture:
+                    account.profilePicture,
+
+                bio:
+                    account.bio,
+
+                verified:
+                    account.verified,
+
+                prediction:
+                    account.prediction,
+
+                score:
+                    account.score,
+
+                fakeProbability:
+                    account.fakeProbability,
+
+                genuineProbability:
+                    account.genuineProbability,
+
+                risk:
+                    account.risk,
+
+                reasons:
+                    account.reasons,
+
+                date:
+                    new Date().toLocaleString()
+
+            });
+
+
+            localStorage.setItem(
+                "detectionHistory",
+                JSON.stringify(detectionHistory)
+            );
+
+
+            // ==========================================
+            // GO TO RESULT PAGE
+            // ==========================================
+
+            window.location.href =
+                "result.html";
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "AI Detection Error:",
+                error
+            );
+
+            alert(
+                "Unable to connect with AI Detection server.\n\n" +
+                error.message
+            );
+
+        }
+
+        finally {
+
+            if (submitButton) {
 
                 submitButton.disabled = false;
 
-                submitButton.innerHTML =
-                    originalButtonText;
+                submitButton.textContent =
+                    "Detect Account";
 
             }
 
         }
 
-    );
+    });
 
 }
 
 
-
 // ==========================================
-// RESULT PAGE - DISPLAY REPORT
+// RESULT PAGE
 // ==========================================
 
-const resultTitle =
-    document.getElementById("resultTitle");
+const resultContainer =
+    document.getElementById(
+        "resultContainer"
+    );
+
+if (resultContainer) {
+
+    const storedAccount =
+        localStorage.getItem(
+            "selectedAccount"
+        );
 
 
-if (resultTitle) {
+    if (storedAccount) {
 
-    const savedAccount =
-        localStorage.getItem("selectedAccount");
-
-
-    const account =
-        savedAccount
-            ? JSON.parse(savedAccount)
-            : null;
-
-
-    if (account) {
-
-        // RESULT TITLE
-
-        resultTitle.innerText =
-            account.result;
-
-
-        // USERNAME
-
-        const usernameResult =
-            document.getElementById("usernameResult");
-
-        if (usernameResult) {
-
-            usernameResult.innerText =
-                "Username: " + account.username;
-
-        }
-
-
-        // SCORE
-
-        const scoreValue =
-            document.getElementById("scoreValue");
-
-        if (scoreValue) {
-
-            scoreValue.innerText =
-                account.score;
-
-        }
-
-
-        // PROGRESS BAR
-
-        const progressBar =
-            document.getElementById("progressBar");
-
-        if (progressBar) {
-
-            setTimeout(function () {
-
-                progressBar.style.width =
-                    account.score + "%";
-
-            }, 100);
-
-        }
-
-
-        // RISK LEVEL
-
-        const riskLevel =
-            document.getElementById("riskLevel");
-
-        if (riskLevel) {
-
-            riskLevel.innerText =
-                account.riskLevel;
-
-        }
+        const account =
+            JSON.parse(storedAccount);
 
 
         // ==========================================
-        // BASIC ACCOUNT INFORMATION
+        // RESULT ELEMENTS
         // ==========================================
 
-        const detailUsername =
-            document.getElementById("detailUsername");
+        const resultUsername =
+            document.getElementById(
+                "resultUsername"
+            );
 
-        const detailFollowers =
-            document.getElementById("detailFollowers");
+        const resultFollowers =
+            document.getElementById(
+                "resultFollowers"
+            );
 
-        const detailFollowing =
-            document.getElementById("detailFollowing");
+        const resultFollowing =
+            document.getElementById(
+                "resultFollowing"
+            );
 
-        const detailPosts =
-            document.getElementById("detailPosts");
+        const resultPosts =
+            document.getElementById(
+                "resultPosts"
+            );
 
-        const detailAccountAge =
-            document.getElementById("detailAccountAge");
+        const resultAge =
+            document.getElementById(
+                "resultAge"
+            );
+
+        const resultLikes =
+            document.getElementById(
+                "resultLikes"
+            );
+
+        const resultComments =
+            document.getElementById(
+                "resultComments"
+            );
+
+        const resultEngagement =
+            document.getElementById(
+                "resultEngagement"
+            );
 
 
-        if (detailUsername) {
+        if (resultUsername) {
 
-            detailUsername.innerText =
+            resultUsername.textContent =
                 account.username;
 
         }
 
+        if (resultFollowers) {
 
-        if (detailFollowers) {
-
-            detailFollowers.innerText =
+            resultFollowers.textContent =
                 account.followers;
 
         }
 
+        if (resultFollowing) {
 
-        if (detailFollowing) {
-
-            detailFollowing.innerText =
+            resultFollowing.textContent =
                 account.following;
 
         }
 
+        if (resultPosts) {
 
-        if (detailPosts) {
-
-            detailPosts.innerText =
+            resultPosts.textContent =
                 account.posts;
 
         }
 
+        if (resultAge) {
 
-        if (detailAccountAge) {
-
-            detailAccountAge.innerText =
-                account.accountAge + " Days";
+            resultAge.textContent =
+                account.accountAge;
 
         }
 
+        if (resultLikes) {
 
-        // ==========================================
-        // ACCOUNT STATISTICS
-        // ==========================================
-
-        const detailLikes =
-            document.getElementById("detailLikes");
-
-        const detailComments =
-            document.getElementById("detailComments");
-
-        const detailEngagement =
-            document.getElementById("detailEngagement");
-
-
-        if (detailLikes) {
-
-            detailLikes.innerText =
+            resultLikes.textContent =
                 account.averageLikes;
 
         }
 
+        if (resultComments) {
 
-        if (detailComments) {
-
-            detailComments.innerText =
+            resultComments.textContent =
                 account.averageComments;
 
         }
 
+        if (resultEngagement) {
 
-        if (detailEngagement) {
-
-            detailEngagement.innerText =
+            resultEngagement.textContent =
                 account.engagement + "%";
 
         }
 
 
         // ==========================================
-        // PROFILE INFORMATION
+        // FAKE / GENUINE PROBABILITY
         // ==========================================
 
-        const detailProfilePicture =
-            document.getElementById(
-                "detailProfilePicture"
+        const fakeProbability =
+            Number(
+                account.fakeProbability ??
+                account.score ??
+                0
             );
 
-        const detailBio =
-            document.getElementById("detailBio");
-
-        const detailVerified =
-            document.getElementById(
-                "detailVerified"
+        const genuineProbability =
+            Number(
+                account.genuineProbability ??
+                (
+                    100 -
+                    fakeProbability
+                )
             );
 
 
-        if (detailProfilePicture) {
+        const fakeProbabilityElement =
+            document.getElementById(
+                "fakeProbability"
+            );
 
-            detailProfilePicture.innerText =
-                account.profilePicture === "yes"
-                    ? "Available ✅"
-                    : "Not Available ❌";
+        const genuineProbabilityElement =
+            document.getElementById(
+                "genuineProbability"
+            );
+
+
+        if (fakeProbabilityElement) {
+
+            fakeProbabilityElement.textContent =
+                fakeProbability.toFixed(2) + "%";
+
+        }
+
+        if (genuineProbabilityElement) {
+
+            genuineProbabilityElement.textContent =
+                genuineProbability.toFixed(2) + "%";
 
         }
 
 
-        if (detailBio) {
+        // ==========================================
+        // RISK CLASSIFICATION
+        // ==========================================
 
-            detailBio.innerText =
-                account.bio === "yes"
-                    ? "Available ✅"
-                    : "Not Available ❌";
+        let riskLevel = "";
+
+        if (fakeProbability >= 70) {
+
+            riskLevel =
+                "HIGH RISK";
+
+        }
+
+        else if (fakeProbability >= 40) {
+
+            riskLevel =
+                "MEDIUM RISK";
+
+        }
+
+        else {
+
+            riskLevel =
+                "LOW RISK";
 
         }
 
 
-        if (detailVerified) {
+        const riskElement =
+            document.getElementById(
+                "riskLevel"
+            );
 
-            detailVerified.innerText =
-                account.verified === "yes"
-                    ? "Verified ✅"
-                    : "Not Verified ❌";
+
+        if (riskElement) {
+
+            riskElement.textContent =
+                riskLevel;
 
         }
 
+
         // ==========================================
-// ADVANCED AI ANALYSIS
-// ==========================================
+        // PREDICTION
+        // ==========================================
+
+        const predictionElement =
+            document.getElementById(
+                "prediction"
+            );
 
 
-// FAKE PROBABILITY
+        if (predictionElement) {
 
-const fakeProbability =
-    document.getElementById(
-        "fakeProbability"
-    );
+            predictionElement.textContent =
+                account.prediction ||
+                (
+                    fakeProbability >= 50
+                        ? "FAKE ACCOUNT"
+                        : "GENUINE ACCOUNT"
+                );
 
-if (fakeProbability) {
-
-    fakeProbability.innerText =
-        account.score + "%";
-
-}
-
-
-// ==========================================
-// TRUST SCORE
-// ==========================================
-
-const trustScore =
-    document.getElementById(
-        "trustScore"
-    );
-
-if (trustScore) {
-
-    const trust =
-        100 - Number(account.score);
-
-    trustScore.innerText =
-        trust + "%";
-
-}
-
-
-// ==========================================
-// ACCOUNT HEALTH
-// ==========================================
-
-const accountHealth =
-    document.getElementById(
-        "accountHealth"
-    );
-
-if (accountHealth) {
-
-    if (account.score >= 60) {
-
-        accountHealth.innerText =
-            "Poor ❌";
-
-    }
-
-    else if (account.score >= 40) {
-
-        accountHealth.innerText =
-            "Average ⚠️";
-
-    }
-
-    else {
-
-        accountHealth.innerText =
-            "Good ✅";
-
-    }
-
-}
-
-
-// ==========================================
-// DETECTION CONFIDENCE
-// ==========================================
-
-const detectionConfidence =
-    document.getElementById(
-        "detectionConfidence"
-    );
-
-if (detectionConfidence) {
-
-    const mlConfidence =
-        Number(account.confidence);
-
-    let confidenceLevel;
-
-    if (mlConfidence >= 70) {
-        confidenceLevel = "Very High";
-    }
-    else if (mlConfidence >= 40) {
-        confidenceLevel = "High";
-    }
-    else {
-        confidenceLevel = "Low";
-    }
-
-    detectionConfidence.innerText =
-        `${mlConfidence.toFixed(2)}% (${confidenceLevel})`;
-}
-
-// ==========================================
-// AI ANALYSIS SUMMARY
-// ==========================================
-
-const aiSummary =
-    document.getElementById(
-        "aiSummary"
-    );
-
-
-if (aiSummary) {
-
-    let summary = "";
-
-
-    // HIGH RISK
-
-    if (account.score >= 70) {
-
-        summary =
-            "Our intelligent detection system found multiple suspicious patterns in this account. " +
-            "The account shows characteristics commonly associated with potentially fake or suspicious social media profiles. " +
-            "We recommend reviewing this account carefully before trusting or interacting with it.";
-
-    }
-
-
-    // MEDIUM RISK
-
-    else if (account.score >= 40) {
-
-        summary =
-            "The analysis detected some suspicious characteristics in this account. " +
-            "Although the account cannot be classified as completely fake, certain activity patterns require additional verification. " +
-            "Users should interact with this account cautiously.";
-
-    }
-
-
-    // LOW RISK
-
-    else {
-
-        summary =
-            "The account appears to have mostly genuine characteristics based on the available information. " +
-            "No major suspicious patterns were detected during the analysis. " +
-            "However, users should always remain cautious while interacting with unknown social media accounts.";
-
-    }
-
-
-    aiSummary.innerText =
-        summary;
-
-}
+        }
 
 
         // ==========================================
-        // ANALYSIS REASONS
+        // ACCOUNT HEALTH
         // ==========================================
 
-        const reasonsList =
-            document.getElementById("reasonsList");
+        const accountHealthElement =
+            document.getElementById(
+                "accountHealth"
+            );
 
 
-        if (reasonsList) {
+        if (accountHealthElement) {
 
-            reasonsList.innerHTML = "";
+            if (account.score >= 60) {
 
+                accountHealthElement.textContent =
+                    "Poor";
 
-            if (
-                !account.reasons ||
-                account.reasons.length === 0
-            ) {
+            }
 
-                const listItem =
-                    document.createElement("li");
+            else if (account.score >= 40) {
 
-                listItem.innerText =
-                    "No major suspicious activity detected.";
-
-                reasonsList.appendChild(listItem);
+                accountHealthElement.textContent =
+                    "Average";
 
             }
 
             else {
 
-                account.reasons.forEach(
-                    function (reason) {
+                accountHealthElement.textContent =
+                    "Good";
 
-                        const listItem =
-                            document.createElement("li");
+            }
 
-                        listItem.innerText =
-                            reason;
+        }
 
-                        reasonsList.appendChild(listItem);
 
-                    }
+        // ==========================================
+        // CONFIDENCE LEVEL
+        // ==========================================
+
+        const confidenceElement =
+            document.getElementById(
+                "confidence"
+            );
+
+
+        if (confidenceElement) {
+
+            const reasons =
+                account.reasons || [];
+
+
+            if (reasons.length >= 5) {
+
+                confidenceElement.textContent =
+                    "Very High";
+
+            }
+
+            else if (reasons.length >= 3) {
+
+                confidenceElement.textContent =
+                    "High";
+
+            }
+
+            else if (reasons.length >= 1) {
+
+                confidenceElement.textContent =
+                    "Medium";
+
+            }
+
+            else {
+
+                confidenceElement.textContent =
+                    "Low";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // REASONS
+        // ==========================================
+
+        const reasonsContainer =
+            document.getElementById(
+                "reasons"
+            );
+
+
+        if (reasonsContainer) {
+
+            reasonsContainer.innerHTML = "";
+
+
+            const reasons =
+                account.reasons || [];
+
+
+            if (reasons.length === 0) {
+
+                const item =
+                    document.createElement(
+                        "li"
+                    );
+
+                item.textContent =
+                    "No major suspicious indicators detected.";
+
+                reasonsContainer.appendChild(
+                    item
                 );
+
+            }
+
+            else {
+
+                reasons.forEach(reason => {
+
+                    const item =
+                        document.createElement(
+                            "li"
+                        );
+
+                    item.textContent =
+                        reason;
+
+                    reasonsContainer.appendChild(
+                        item
+                    );
+
+                });
 
             }
 
         }
 
     }
+
+    else {
+
+        resultContainer.innerHTML =
+            "<p>No detection result found.</p>";
+
+    }
+
+}
+
+
+// ==========================================
+// HISTORY PAGE
+// ==========================================
+
+const historyContainer =
+    document.getElementById(
+        "historyContainer"
+    );
+
+if (historyContainer) {
+
+    let detectionHistory =
+        JSON.parse(
+            localStorage.getItem(
+                "detectionHistory"
+            )
+        ) || [];
+
+
+    const searchInput =
+        document.getElementById(
+            "historySearch"
+        );
+
+    const riskFilter =
+        document.getElementById(
+            "riskFilter"
+        );
+
+
+    function displayHistory(records) {
+
+        historyContainer.innerHTML =
+            "";
+
+
+        if (records.length === 0) {
+
+            historyContainer.innerHTML =
+                "<p>No detection history found.</p>";
+
+            return;
+
+        }
+
+
+        records.forEach((record, index) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "history-card";
+
+
+            const score =
+                Number(
+                    record.score || 0
+                );
+
+
+            let risk =
+                record.risk;
+
+
+            if (!risk) {
+
+                if (score >= 70) {
+
+                    risk =
+                        "HIGH RISK";
+
+                }
+
+                else if (score >= 40) {
+
+                    risk =
+                        "MEDIUM RISK";
+
+                }
+
+                else {
+
+                    risk =
+                        "LOW RISK";
+
+                }
+
+            }
+
+
+            card.innerHTML = `
+
+                <div class="history-header">
+
+                    <h3>
+                        ${record.username || "Unknown"}
+                    </h3>
+
+                    <span class="risk-badge">
+                        ${risk}
+                    </span>
+
+                </div>
+
+                <div class="history-details">
+
+                    <p>
+                        <strong>Followers:</strong>
+                        ${record.followers ?? 0}
+                    </p>
+
+                    <p>
+                        <strong>Following:</strong>
+                        ${record.following ?? 0}
+                    </p>
+
+                    <p>
+                        <strong>Posts:</strong>
+                        ${record.posts ?? 0}
+                    </p>
+
+                    <p>
+                        <strong>Fake Probability:</strong>
+                        ${score.toFixed(2)}%
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        ${record.date || "N/A"}
+                    </p>
+
+                </div>
+
+                <div class="history-actions">
+
+                    <button
+                        class="view-history-btn"
+                        data-index="${index}">
+                        View
+                    </button>
+
+                    <button
+                        class="delete-history-btn"
+                        data-index="${index}">
+                        Delete
+                    </button>
+
+                </div>
+
+            `;
+
+
+            historyContainer.appendChild(
+                card
+            );
+
+        });
+
+
+        // ==========================================
+        // VIEW BUTTON
+        // ==========================================
+
+        document
+            .querySelectorAll(
+                ".view-history-btn"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+                        const account =
+                            records[index];
+
+
+                        localStorage.setItem(
+                            "selectedAccount",
+                            JSON.stringify(
+                                account
+                            )
+                        );
+
+
+                        window.location.href =
+                            "result.html";
+
+                    }
+                );
+
+            });
+
+
+        // ==========================================
+        // DELETE BUTTON
+        // ==========================================
+
+        document
+            .querySelectorAll(
+                ".delete-history-btn"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        const accountToDelete =
+                            records[index];
+
+
+                        detectionHistory =
+                            detectionHistory.filter(
+                                record =>
+                                    record !==
+                                    accountToDelete
+                            );
+
+
+                        localStorage.setItem(
+                            "detectionHistory",
+                            JSON.stringify(
+                                detectionHistory
+                            )
+                        );
+
+
+                        displayHistory(
+                            detectionHistory
+                        );
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    // ==========================================
+    // HISTORY FILTER
+    // ==========================================
+
+    function filterHistory() {
+
+        const searchTerm =
+            searchInput
+                ? searchInput.value
+                    .toLowerCase()
+                    .trim()
+                : "";
+
+
+        const selectedRisk =
+            riskFilter
+                ? riskFilter.value
+                    .toLowerCase()
+                : "all";
+
+
+        const filtered =
+            detectionHistory.filter(
+                record => {
+
+                    const username =
+                        (
+                            record.username ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const score =
+                        Number(
+                            record.score || 0
+                        );
+
+
+                    const matchesSearch =
+                        username.includes(
+                            searchTerm
+                        );
+
+
+                    let riskMatch = true;
+
+
+                    if (selectedRisk === "high") {
+
+                        riskMatch =
+                            Number(record.score) >= 70;
+
+                    }
+
+                    else if (
+                        selectedRisk ===
+                        "medium"
+                    ) {
+
+                        riskMatch =
+                            Number(record.score) >= 40 &&
+                            Number(record.score) < 70;
+
+                    }
+
+                    else if (
+                        selectedRisk ===
+                        "low"
+                    ) {
+
+                        riskMatch =
+                            Number(record.score) < 40;
+
+                    }
+
+
+                    return (
+                        matchesSearch &&
+                        riskMatch
+                    );
+
+                }
+            );
+
+
+        displayHistory(
+            filtered
+        );
+
+    }
+
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            filterHistory
+        );
+
+    }
+
+
+    if (riskFilter) {
+
+        riskFilter.addEventListener(
+            "change",
+            filterHistory
+        );
+
+    }
+
+
+    displayHistory(
+        detectionHistory
+    );
+
+    }
+
+// ==========================================
+// ANALYSIS REASONS
+// ==========================================
+
+const reasonsList =
+    document.getElementById("reasonsList");
+
+
+if (reasonsList) {
+
+    reasonsList.innerHTML = "";
+
+
+    if (
+        !account.reasons ||
+        account.reasons.length === 0
+    ) {
+
+        const listItem =
+            document.createElement("li");
+
+        listItem.innerText =
+            "No major suspicious activity detected.";
+
+        reasonsList.appendChild(listItem);
+
+    }
+
+    else {
+
+        account.reasons.forEach(
+            function (reason) {
+
+                const listItem =
+                    document.createElement("li");
+
+                listItem.innerText =
+                    reason;
+
+                reasonsList.appendChild(listItem);
+
+            }
+        );
+
+    }
+
+}
 
 }
 
@@ -1060,7 +1410,6 @@ if (aiSummary) {
 
 const checkAgainBtn =
     document.getElementById("checkAgainBtn");
-
 
 if (checkAgainBtn) {
 
@@ -1084,7 +1433,6 @@ if (checkAgainBtn) {
 const historyTableBody =
     document.getElementById("historyTableBody");
 
-
 if (historyTableBody) {
 
     let history =
@@ -1095,7 +1443,6 @@ if (historyTableBody) {
 
     const searchUsername =
         document.getElementById("searchUsername");
-
 
     const riskFilter =
         document.getElementById("riskFilter");
@@ -1153,14 +1500,19 @@ if (historyTableBody) {
                         class="view-btn"
                         data-index="${originalIndex}"
                     >
+
                         👁️ View
+
                     </button>
+
 
                     <button
                         class="delete-btn"
                         data-index="${originalIndex}"
                     >
+
                         🗑️ Delete
+
                     </button>
 
                 </td>
@@ -1274,17 +1626,19 @@ if (historyTableBody) {
                 if (selectedRisk === "high") {
 
                     riskMatch =
-                        Number(record.score) >= 60;
+                        Number(record.score) >= 70;
 
                 }
+
 
                 else if (selectedRisk === "medium") {
 
                     riskMatch =
-                        Number(record.score) >=40 &&
+                        Number(record.score) >= 40 &&
                         Number(record.score) < 70;
 
                 }
+
 
                 else if (selectedRisk === "low") {
 
@@ -1397,123 +1751,221 @@ if (clearHistoryBtn) {
 const analyticTotal =
     document.getElementById("analyticTotal");
 
+
 if (analyticTotal) {
 
     fetch(`${API_BASE_URL}/dashboard-stats`, {
-    method: "GET",
-    cache: "no-store"
-})
+        method: "GET",
+        cache: "no-store"
+    })
+
         .then(function(response) {
 
             if (!response.ok) {
+
                 throw new Error(
-                    "Dashboard API Error: " + response.status
+                    "Dashboard API Error: " +
+                    response.status
                 );
+
             }
 
+
             return response.json();
+
         })
+
 
         .then(function(data) {
 
             if (!data.success) {
+
                 throw new Error(
                     data.error ||
                     "Unable to load dashboard statistics."
                 );
+
             }
 
-            const total = Number(data.total) || 0;
-            const high = Number(data.highRisk) || 0;
-            const medium = Number(data.mediumRisk) || 0;
-            const low = Number(data.lowRisk) || 0;
+
+            const total =
+                Number(data.total) || 0;
+
+            const high =
+                Number(data.highRisk) || 0;
+
+            const medium =
+                Number(data.mediumRisk) || 0;
+
+            const low =
+                Number(data.lowRisk) || 0;
+
 
             const totalElement =
-                document.getElementById("analyticTotal");
+                document.getElementById(
+                    "analyticTotal"
+                );
+
 
             const highElement =
-                document.getElementById("analyticHigh");
+                document.getElementById(
+                    "analyticHigh"
+                );
+
 
             const mediumElement =
-                document.getElementById("analyticMedium");
+                document.getElementById(
+                    "analyticMedium"
+                );
+
 
             const lowElement =
-                document.getElementById("analyticLow");
+                document.getElementById(
+                    "analyticLow"
+                );
+
 
             if (totalElement) {
-                totalElement.innerText = total;
+
+                totalElement.innerText =
+                    total;
+
             }
+
 
             if (highElement) {
-                highElement.innerText = high;
+
+                highElement.innerText =
+                    high;
+
             }
+
 
             if (mediumElement) {
-                mediumElement.innerText = medium;
+
+                mediumElement.innerText =
+                    medium;
+
             }
+
 
             if (lowElement) {
-                lowElement.innerText = low;
+
+                lowElement.innerText =
+                    low;
+
             }
+
 
             const highPercentage =
-                total > 0 ? Math.round((high / total) * 100) : 0;
+                total > 0
+                    ? Math.round(
+                        (high / total) * 100
+                    )
+                    : 0;
+
 
             const mediumPercentage =
-                total > 0 ? Math.round((medium / total) * 100) : 0;
+                total > 0
+                    ? Math.round(
+                        (medium / total) * 100
+                    )
+                    : 0;
+
 
             const lowPercentage =
-                total > 0 ? Math.round((low / total) * 100) : 0;
+                total > 0
+                    ? Math.round(
+                        (low / total) * 100
+                    )
+                    : 0;
+
 
             const highPercentageElement =
-                document.getElementById("highPercentage");
+                document.getElementById(
+                    "highPercentage"
+                );
+
 
             const mediumPercentageElement =
-                document.getElementById("mediumPercentage");
+                document.getElementById(
+                    "mediumPercentage"
+                );
+
 
             const lowPercentageElement =
-                document.getElementById("lowPercentage");
+                document.getElementById(
+                    "lowPercentage"
+                );
+
 
             if (highPercentageElement) {
+
                 highPercentageElement.innerText =
                     highPercentage + "%";
+
             }
+
 
             if (mediumPercentageElement) {
+
                 mediumPercentageElement.innerText =
                     mediumPercentage + "%";
+
             }
+
 
             if (lowPercentageElement) {
+
                 lowPercentageElement.innerText =
                     lowPercentage + "%";
+
             }
+
 
             const highBar =
-                document.getElementById("highBar");
+                document.getElementById(
+                    "highBar"
+                );
+
 
             const mediumBar =
-                document.getElementById("mediumBar");
+                document.getElementById(
+                    "mediumBar"
+                );
+
 
             const lowBar =
-                document.getElementById("lowBar");
+                document.getElementById(
+                    "lowBar"
+                );
+
 
             if (highBar) {
+
                 highBar.style.width =
                     highPercentage + "%";
+
             }
+
 
             if (mediumBar) {
+
                 mediumBar.style.width =
                     mediumPercentage + "%";
+
             }
 
+
             if (lowBar) {
+
                 lowBar.style.width =
                     lowPercentage + "%";
+
             }
 
         })
+
 
         .catch(function(error) {
 
@@ -1523,7 +1975,9 @@ if (analyticTotal) {
             );
 
         });
+
 }
+
 
 // ==========================================
 // ANALYTIC - NEW DETECTION BUTTON
@@ -1599,6 +2053,7 @@ if (analyticHomeBtn) {
 
 }
 
+
 // ==========================================
 // DOWNLOAD DETECTION REPORT
 // ==========================================
@@ -1641,65 +2096,75 @@ if (downloadReportBtn) {
                 JSON.parse(savedAccount);
 
 
-// ==========================================
-// CALCULATE ADVANCED VALUES
-// ==========================================
+            // ==========================================
+            // CALCULATE ADVANCED VALUES
+            // ==========================================
 
-const fakeProbability =
-    Number(account.score);
-
-const trustScore =
-    100 - Number(account.score);
-
-let accountHealth = "";
-
-if (account.score >= 70) {
-
-    accountHealth =
-        "Poor";
-
-}
-
-else if (account.score >= 40) {
-
-    accountHealth =
-        "Average";
-
-}
-
-else {
-
-    accountHealth =
-        "Good";
-
-}
+            const fakeProbability =
+                Number(account.score);
 
 
-let confidence = "";
+            const trustScore =
+                100 - Number(account.score);
 
-const mlConfidence =
-    Number(account.confidence);
 
-if (mlConfidence >= 70) {
+            let accountHealth = "";
 
-    confidence =
-        "Very High";
 
-}
+            if (account.score >= 70) {
 
-else if (mlConfidence >= 40) {
+                accountHealth =
+                    "Poor";
 
-    confidence =
-        "High";
+            }
 
-}
 
-else {
+            else if (account.score >= 40) {
 
-    confidence =
-        "Low";
+                accountHealth =
+                    "Average";
 
-}
+            }
+
+
+            else {
+
+                accountHealth =
+                    "Good";
+
+            }
+
+
+            let confidence = "";
+
+
+            const mlConfidence =
+                Number(account.confidence);
+
+
+            if (mlConfidence >= 70) {
+
+                confidence =
+                    "Very High";
+
+            }
+
+
+            else if (mlConfidence >= 40) {
+
+                confidence =
+                    "High";
+
+            }
+
+
+            else {
+
+                confidence =
+                    "Low";
+
+            }
+
 
             // ==========================================
             // GENERATE AI SUMMARY
@@ -1718,6 +2183,7 @@ else {
 
             }
 
+
             else if (account.score >= 40) {
 
                 summary =
@@ -1726,6 +2192,7 @@ else {
                     "or interacting with this account.";
 
             }
+
 
             else {
 
@@ -1753,6 +2220,7 @@ else {
                     "No major suspicious activity detected.";
 
             }
+
 
             else {
 
@@ -1909,6 +2377,7 @@ END OF REPORT
 
 }
 
+
 // ==========================================
 // DARK MODE / LIGHT MODE SYSTEM
 // ==========================================
@@ -1978,6 +2447,7 @@ if (themeToggle) {
 
             }
 
+
             else {
 
                 // SAVE LIGHT THEME
@@ -2020,15 +2490,9 @@ if (
 ) {
 
     fetch(`${API_BASE_URL}/dashboard-stats`, {
-    method: "GET",
-    cache: "no-store"
-}), {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(accountData)
-})
+        method: "GET",
+        cache: "no-store"
+    })
 
         .then(function(response) {
 
@@ -2105,7 +2569,6 @@ if (
                             ],
 
                             datasets: [
-
                                 {
 
                                     data: [
@@ -2123,24 +2586,19 @@ if (
                                     borderWidth: 2
 
                                 }
-
                             ]
 
                         },
 
-
                         options: {
 
                             responsive: true,
-
                             maintainAspectRatio: true,
 
                             plugins: {
 
                                 legend: {
-
                                     position: "bottom"
-
                                 }
 
                             }
@@ -2186,7 +2644,6 @@ if (
                             ],
 
                             datasets: [
-
                                 {
 
                                     label:
@@ -2207,16 +2664,13 @@ if (
                                     borderRadius: 8
 
                                 }
-
                             ]
 
                         },
 
-
                         options: {
 
                             responsive: true,
-
                             maintainAspectRatio: true,
 
                             scales: {
@@ -2226,22 +2680,17 @@ if (
                                     beginAtZero: true,
 
                                     ticks: {
-
                                         precision: 0
-
                                     }
 
                                 }
 
                             },
 
-
                             plugins: {
 
                                 legend: {
-
                                     display: false
-
                                 }
 
                             }
@@ -2255,7 +2704,6 @@ if (
 
         })
 
-
         .catch(function(error) {
 
             console.error(
@@ -2267,6 +2715,7 @@ if (
 
 }
 
+
 // ==========================================
 // MOST RECENT DETECTION + DETECTION TREND
 // MYSQL
@@ -2274,7 +2723,6 @@ if (
 
 const detectionTrendCanvas =
     document.getElementById("detectionTrendChart");
-
 
 // ==========================================
 // LOAD DETECTION HISTORY FROM MYSQL
@@ -2563,6 +3011,7 @@ fetch(`${API_BASE_URL}/dashboard-history`, {
 
                     datasets: [
 
+
                         {
 
                             label:
@@ -2682,6 +3131,7 @@ fetch(`${API_BASE_URL}/dashboard-history`, {
 
                         },
 
+
                         tooltip: {
 
                             enabled: true
@@ -2693,7 +3143,6 @@ fetch(`${API_BASE_URL}/dashboard-history`, {
                 }
 
             }
-
         );
 
     }
@@ -2709,6 +3158,7 @@ fetch(`${API_BASE_URL}/dashboard-history`, {
     );
 
 });
+
 
 // ==========================================
 // ACCOUNT COMPARISON SYSTEM
@@ -3006,18 +3456,7 @@ if (compareAccount1 && compareAccount2) {
                                         Engagement Rate
                                     </td>
 
-                                    <td>
-                                        ${account1.engagement}%
-                                    </td>
-
-                                    <td>
-                                        ${account2.engagement}%
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
+                                                                    <tr>
 
                                     <td>
                                         Profile Picture
@@ -3135,6 +3574,7 @@ if (compareAccount1 && compareAccount2) {
                 `;
 
             }
+
         );
 
     }
@@ -3208,10 +3648,12 @@ if (compareHomeBtn) {
 
 }
 
+
 const openCompareBtn =
     document.getElementById(
         "openCompareBtn"
     );
+
 
 if (openCompareBtn) {
 
@@ -3227,11 +3669,28 @@ if (openCompareBtn) {
 
 }
 
-// View Detection History Button
-const viewHistoryBtn = document.getElementById("viewHistoryBtn");
+
+// ==========================================
+// VIEW DETECTION HISTORY BUTTON
+// ==========================================
+
+const viewHistoryBtn =
+    document.getElementById(
+        "viewHistoryBtn"
+    );
+
 
 if (viewHistoryBtn) {
-    viewHistoryBtn.addEventListener("click", function () {
-        window.location.href = "history.html";
-    });
+
+    viewHistoryBtn.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "history.html";
+
+        }
+    );
+
 }
+
