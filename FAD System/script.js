@@ -41,9 +41,9 @@ const dashboardStats = document.getElementById("dashboardStats");
 if (dashboardStats) {
 
     fetch(`${API_BASE_URL}/dashboard-stats`, {
-        method: "GET",
-        cache: "no-store"
-    })
+    method: "GET",
+    cache: "no-store"
+})
 
         .then(response => {
 
