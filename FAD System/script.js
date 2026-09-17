@@ -42,7 +42,7 @@ if (
     dashboardLowRisk
 ) {
 
-    fetch("http://127.0.0.1:5000/dashboard-stats")
+    fetch(`${API_BASE_URL}/predict`)
 
         .then(function(response) {
 
@@ -1405,7 +1405,7 @@ const analyticTotal =
 
 if (analyticTotal) {
 
-    fetch("http://127.0.0.1:5000/dashboard-stats")
+    fetch(`${API_BASE_URL}/predict`)
         .then(function(response) {
 
             if (!response.ok) {
@@ -2280,7 +2280,7 @@ const detectionTrendCanvas =
 // LOAD DETECTION HISTORY FROM MYSQL
 // ==========================================
 
-fetch("http://127.0.0.1:5000/dashboard-history", {
+fetch(`${API_BASE_URL}/predict`), {
     method: "GET",
     cache: "no-store"
 })
