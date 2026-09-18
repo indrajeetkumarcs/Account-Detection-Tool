@@ -1401,8 +1401,6 @@ if (reasonsList) {
 
 }
 
-}
-
 
 // ==========================================
 // RESULT PAGE - CHECK ANOTHER ACCOUNT
