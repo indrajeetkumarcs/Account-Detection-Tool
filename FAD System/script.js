@@ -11,7 +11,7 @@
 // Example:
 // const API_BASE_URL = "https://your-backend.vercel.app";
 
-const API_BASE_URL = "https://YOUR-BACKEND-VERCEL-URL.vercel.app";
+const API_BASE_URL = "https://backend-fad-system.vercel.app";
 
 
 // ==========================================
