@@ -626,375 +626,506 @@ localStorage.setItem(
 // ==========================================
 
 const resultContainer =
-    document.getElementById(
-        "resultContainer"
-    );
+    document.getElementById("resultContainer");
 
 if (resultContainer) {
 
     const storedAccount =
-        localStorage.getItem(
-            "selectedAccount"
-        );
-
+        localStorage.getItem("selectedAccount");
 
     if (storedAccount) {
 
-        const account =
-            JSON.parse(storedAccount);
+        let account = null;
 
+        try {
 
-        // ==========================================
-        // RESULT ELEMENTS
-        // ==========================================
-
-        const resultUsername =
-            document.getElementById(
-                "resultUsername"
-            );
-
-        const resultFollowers =
-            document.getElementById(
-                "resultFollowers"
-            );
-
-        const resultFollowing =
-            document.getElementById(
-                "resultFollowing"
-            );
-
-        const resultPosts =
-            document.getElementById(
-                "resultPosts"
-            );
-
-        const resultAge =
-            document.getElementById(
-                "resultAge"
-            );
-
-        const resultLikes =
-            document.getElementById(
-                "resultLikes"
-            );
-
-        const resultComments =
-            document.getElementById(
-                "resultComments"
-            );
-
-        const resultEngagement =
-            document.getElementById(
-                "resultEngagement"
-            );
-
-
-        if (resultUsername) {
-
-            resultUsername.textContent =
-                account.username;
+            account = JSON.parse(storedAccount);
 
         }
 
-        if (resultFollowers) {
+        catch (error) {
 
-            resultFollowers.textContent =
-                account.followers;
-
-        }
-
-        if (resultFollowing) {
-
-            resultFollowing.textContent =
-                account.following;
-
-        }
-
-        if (resultPosts) {
-
-            resultPosts.textContent =
-                account.posts;
-
-        }
-
-        if (resultAge) {
-
-            resultAge.textContent =
-                account.accountAge;
-
-        }
-
-        if (resultLikes) {
-
-            resultLikes.textContent =
-                account.averageLikes;
-
-        }
-
-        if (resultComments) {
-
-            resultComments.textContent =
-                account.averageComments;
-
-        }
-
-        if (resultEngagement) {
-
-            resultEngagement.textContent =
-                account.engagement + "%";
+            console.error(
+                "Selected Account JSON Error:",
+                error
+            );
 
         }
 
 
-        // ==========================================
-        // FAKE / GENUINE PROBABILITY
-        // ==========================================
+        if (account) {
 
-        const fakeProbability =
-            Number(
-                account.fakeProbability ??
-                account.score ??
-                0
-            );
+            // ==========================================
+            // RESULT TITLE
+            // ==========================================
 
-        const genuineProbability =
-            Number(
-                account.genuineProbability ??
-                (
-                    100 -
-                    fakeProbability
-                )
-            );
+            const resultTitle =
+                document.getElementById("resultTitle");
 
+            if (resultTitle) {
 
-        const fakeProbabilityElement =
-            document.getElementById(
-                "fakeProbability"
-            );
-
-        const genuineProbabilityElement =
-            document.getElementById(
-                "genuineProbability"
-            );
-
-
-        if (fakeProbabilityElement) {
-
-            fakeProbabilityElement.textContent =
-                fakeProbability.toFixed(2) + "%";
-
-        }
-
-        if (genuineProbabilityElement) {
-
-            genuineProbabilityElement.textContent =
-                genuineProbability.toFixed(2) + "%";
-
-        }
-
-
-        // ==========================================
-        // RISK CLASSIFICATION
-        // ==========================================
-
-        let riskLevel = "";
-
-        if (fakeProbability >= 70) {
-
-            riskLevel =
-                "HIGH RISK";
-
-        }
-
-        else if (fakeProbability >= 40) {
-
-            riskLevel =
-                "MEDIUM RISK";
-
-        }
-
-        else {
-
-            riskLevel =
-                "LOW RISK";
-
-        }
-
-
-        const riskElement =
-            document.getElementById(
-                "riskLevel"
-            );
-
-
-        if (riskElement) {
-
-            riskElement.textContent =
-                riskLevel;
-
-        }
-
-
-        // ==========================================
-        // PREDICTION
-        // ==========================================
-
-        const predictionElement =
-            document.getElementById(
-                "prediction"
-            );
-
-
-        if (predictionElement) {
-
-            predictionElement.textContent =
-                account.prediction ||
-                (
-                    fakeProbability >= 50
-                        ? "FAKE ACCOUNT"
-                        : "GENUINE ACCOUNT"
-                );
-
-        }
-
-
-        // ==========================================
-        // ACCOUNT HEALTH
-        // ==========================================
-
-        const accountHealthElement =
-            document.getElementById(
-                "accountHealth"
-            );
-
-
-        if (accountHealthElement) {
-
-            if (account.score >= 60) {
-
-                accountHealthElement.textContent =
-                    "Poor";
+                resultTitle.textContent =
+                    account.prediction ||
+                    "Account Analysis Result";
 
             }
 
-            else if (account.score >= 40) {
 
-                accountHealthElement.textContent =
-                    "Average";
+            // ==========================================
+            // USERNAME
+            // ==========================================
+
+            const usernameResult =
+                document.getElementById("usernameResult");
+
+            if (usernameResult) {
+
+                usernameResult.textContent =
+                    "Username: " +
+                    (account.username || "Not Available");
+
+            }
+
+
+            // ==========================================
+            // RISK SCORE
+            // ==========================================
+
+            const fakeProbability =
+                Number(
+                    account.fakeProbability ??
+                    account.score ??
+                    0
+                );
+
+            const genuineProbability =
+                Number(
+                    account.genuineProbability ??
+                    (100 - fakeProbability)
+                );
+
+
+            const scoreValue =
+                document.getElementById("scoreValue");
+
+            if (scoreValue) {
+
+                scoreValue.textContent =
+                    fakeProbability.toFixed(2);
+
+            }
+
+
+            // ==========================================
+            // PROGRESS BAR
+            // ==========================================
+
+            const progressBar =
+                document.getElementById("progressBar");
+
+            if (progressBar) {
+
+                progressBar.style.width =
+                    fakeProbability + "%";
+
+            }
+
+
+            // ==========================================
+            // RISK LEVEL
+            // ==========================================
+
+            let riskLevel = "";
+
+            if (fakeProbability >= 70) {
+
+                riskLevel = "HIGH RISK";
+
+            }
+
+            else if (fakeProbability >= 40) {
+
+                riskLevel = "MEDIUM RISK";
 
             }
 
             else {
 
-                accountHealthElement.textContent =
-                    "Good";
+                riskLevel = "LOW RISK";
 
             }
 
-        }
+
+            const riskElement =
+                document.getElementById("riskLevel");
+
+            if (riskElement) {
+
+                riskElement.textContent =
+                    riskLevel;
+
+            }
 
 
-        // ==========================================
-        // CONFIDENCE LEVEL
-        // ==========================================
+            // ==========================================
+            // BASIC ACCOUNT INFORMATION
+            // ==========================================
 
-        const confidenceElement =
-            document.getElementById(
-                "confidence"
-            );
+            const detailUsername =
+                document.getElementById("detailUsername");
+
+            const detailFollowers =
+                document.getElementById("detailFollowers");
+
+            const detailFollowing =
+                document.getElementById("detailFollowing");
+
+            const detailPosts =
+                document.getElementById("detailPosts");
+
+            const detailAccountAge =
+                document.getElementById("detailAccountAge");
 
 
-        if (confidenceElement) {
+            if (detailUsername) {
+
+                detailUsername.textContent =
+                    account.username ?? "-";
+
+            }
+
+
+            if (detailFollowers) {
+
+                detailFollowers.textContent =
+                    account.followers ?? 0;
+
+            }
+
+
+            if (detailFollowing) {
+
+                detailFollowing.textContent =
+                    account.following ?? 0;
+
+            }
+
+
+            if (detailPosts) {
+
+                detailPosts.textContent =
+                    account.posts ?? 0;
+
+            }
+
+
+            if (detailAccountAge) {
+
+                detailAccountAge.textContent =
+                    (account.accountAge ?? 0) +
+                    " Days";
+
+            }
+
+
+            // ==========================================
+            // ACCOUNT STATISTICS
+            // ==========================================
+
+            const detailLikes =
+                document.getElementById("detailLikes");
+
+            const detailComments =
+                document.getElementById("detailComments");
+
+            const detailEngagement =
+                document.getElementById("detailEngagement");
+
+
+            if (detailLikes) {
+
+                detailLikes.textContent =
+                    account.averageLikes ?? 0;
+
+            }
+
+
+            if (detailComments) {
+
+                detailComments.textContent =
+                    account.averageComments ?? 0;
+
+            }
+
+
+            if (detailEngagement) {
+
+                detailEngagement.textContent =
+                    Number(
+                        account.engagement ?? 0
+                    ).toFixed(2) + "%";
+
+            }
+
+
+            // ==========================================
+            // PROFILE INFORMATION
+            // ==========================================
+
+            const detailProfilePicture =
+                document.getElementById(
+                    "detailProfilePicture"
+                );
+
+            const detailBio =
+                document.getElementById("detailBio");
+
+            const detailVerified =
+                document.getElementById(
+                    "detailVerified"
+                );
+
+
+            if (detailProfilePicture) {
+
+                detailProfilePicture.textContent =
+                    account.profilePicture === "yes"
+                        ? "Yes"
+                        : "No";
+
+            }
+
+
+            if (detailBio) {
+
+                detailBio.textContent =
+                    account.bio === "yes"
+                        ? "Yes"
+                        : "No";
+
+            }
+
+
+            if (detailVerified) {
+
+                detailVerified.textContent =
+                    account.verified === "yes"
+                        ? "Yes"
+                        : "No";
+
+            }
+
+
+            // ==========================================
+            // FAKE PROBABILITY
+            // ==========================================
+
+            const fakeProbabilityElement =
+                document.getElementById(
+                    "fakeProbability"
+                );
+
+            if (fakeProbabilityElement) {
+
+                fakeProbabilityElement.textContent =
+                    fakeProbability.toFixed(2) +
+                    "%";
+
+            }
+
+
+            // ==========================================
+            // TRUST SCORE
+            // ==========================================
+
+            const trustScoreElement =
+                document.getElementById(
+                    "trustScore"
+                );
+
+            const trustScore =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        100 - fakeProbability
+                    )
+                );
+
+            if (trustScoreElement) {
+
+                trustScoreElement.textContent =
+                    trustScore.toFixed(2) +
+                    "%";
+
+            }
+
+
+            // ==========================================
+            // ACCOUNT HEALTH
+            // ==========================================
+
+            const accountHealthElement =
+                document.getElementById(
+                    "accountHealth"
+                );
+
+
+            if (accountHealthElement) {
+
+                if (fakeProbability >= 70) {
+
+                    accountHealthElement.textContent =
+                        "Poor";
+
+                }
+
+                else if (fakeProbability >= 40) {
+
+                    accountHealthElement.textContent =
+                        "Average";
+
+                }
+
+                else {
+
+                    accountHealthElement.textContent =
+                        "Good";
+
+                }
+
+            }
+
+
+            // ==========================================
+            // DETECTION CONFIDENCE
+            // ==========================================
+
+            const detectionConfidenceElement =
+                document.getElementById(
+                    "detectionConfidence"
+                );
 
             const reasons =
-                account.reasons || [];
+                Array.isArray(account.reasons)
+                    ? account.reasons
+                    : [];
 
+
+            let confidenceText = "Low";
 
             if (reasons.length >= 5) {
 
-                confidenceElement.textContent =
-                    "Very High";
+                confidenceText = "Very High";
 
             }
 
             else if (reasons.length >= 3) {
 
-                confidenceElement.textContent =
-                    "High";
+                confidenceText = "High";
 
             }
 
             else if (reasons.length >= 1) {
 
-                confidenceElement.textContent =
-                    "Medium";
+                confidenceText = "Medium";
 
             }
 
-            else {
 
-                confidenceElement.textContent =
-                    "Low";
+            if (detectionConfidenceElement) {
+
+                detectionConfidenceElement.textContent =
+                    confidenceText;
+
+            }
+
+
+            // ==========================================
+            // AI SUMMARY
+            // ==========================================
+
+            const aiSummary =
+                document.getElementById("aiSummary");
+
+            if (aiSummary) {
+
+                if (fakeProbability >= 70) {
+
+                    aiSummary.textContent =
+                        "The AI analysis indicates a high probability " +
+                        "that this account may be suspicious or fake. " +
+                        "Please review the detected risk indicators carefully.";
+
+                }
+
+                else if (fakeProbability >= 40) {
+
+                    aiSummary.textContent =
+                        "The AI analysis indicates a medium level of risk. " +
+                        "Some account characteristics may require further review.";
+
+                }
+
+                else {
+
+                    aiSummary.textContent =
+                        "The AI analysis indicates a low level of risk. " +
+                        "No major suspicious indicators were identified.";
+
+                }
+
+            }
+
+
+            // ==========================================
+            // ANALYSIS REASONS
+            // ==========================================
+
+            const reasonsList =
+                document.getElementById("reasonsList");
+
+            if (reasonsList) {
+
+                reasonsList.innerHTML = "";
+
+
+                if (reasons.length === 0) {
+
+                    const item =
+                        document.createElement("li");
+
+                    item.textContent =
+                        "No major suspicious indicators detected.";
+
+                    reasonsList.appendChild(item);
+
+                }
+
+                else {
+
+                    reasons.forEach(function (reason) {
+
+                        const item =
+                            document.createElement("li");
+
+                        item.textContent =
+                            reason;
+
+                        reasonsList.appendChild(item);
+
+                    });
+
+                }
 
             }
 
         }
 
+        else {
 
-        // ==========================================
-        // REASONS
-        // ==========================================
-
-        const reasonsContainer =
-            document.getElementById(
-                "reasons"
-            );
-
-
-        if (reasonsContainer) {
-
-            reasonsContainer.innerHTML = "";
-
-
-            const reasons =
-                account.reasons || [];
-
-
-            if (reasons.length === 0) {
-
-                const item =
-                    document.createElement(
-                        "li"
-                    );
-
-                item.textContent =
-                    "No major suspicious indicators detected.";
-
-                reasonsContainer.appendChild(
-                    item
-                );
-
-            }
-
-            else {
-
-                reasons.forEach(reason => {
-
-                    const item =
-                        document.createElement(
-                            "li"
-                        );
-
-                    item.textContent =
-                        reason;
-
-                    reasonsContainer.appendChild(
-                        item
-                    );
-
-                });
-
-            }
+            resultContainer.innerHTML =
+                "<p>No valid detection result found.</p>";
 
         }
 
@@ -1003,12 +1134,11 @@ if (resultContainer) {
     else {
 
         resultContainer.innerHTML =
-            "<p>No detection result found.</p>";
+            "<p>No detection result found. Please analyze an account first.</p>";
 
     }
 
 }
-
 
 // ==========================================
 // HISTORY PAGE
