@@ -20,11 +20,11 @@ CORS(app)
 # ==========================================
 
 DB_CONFIG = {
-    "host": "127.0.0.1",
-    "user": "root",
-    "password": "Indrajeet@123",
-    "database": "fad_system",
-    "port": 3306
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME"),
+    "port": int(os.getenv("DB_PORT", "3306"))
 }
 
 
@@ -87,8 +87,7 @@ try:
     test_db.close()
 
     print("===================================")
-    print("MYSQL DATABASE CONNECTED!")
-    print("DATABASE: fad_system")
+    print("DATABASE:", DB_CONFIG["database"])
     print("===================================")
 
 except Exception as error:
