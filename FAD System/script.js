@@ -11,7 +11,7 @@
 // Example:
 // const API_BASE_URL = "https://your-backend.vercel.app";
 
-const API_BASE_URL = "https://backend-fad-system.vercel.app";
+const API_BASE_URL = "https://backend-jt5daoogk-fad-system.vercel.app";
 
 
 // ==========================================
@@ -3692,3 +3692,100 @@ if (viewHistoryBtn) {
 
 }
 
+// ==========================================
+// AUTOMATIC ENGAGEMENT RATE CALCULATOR
+// ==========================================
+
+const followersInput =
+    document.getElementById("followers");
+
+const averageLikesInput =
+    document.getElementById("averageLikes");
+
+const averageCommentsInput =
+    document.getElementById("averageComments");
+
+const engagementInput =
+    document.getElementById("engagement");
+
+
+function calculateEngagement() {
+
+    if (
+        !followersInput ||
+        !averageLikesInput ||
+        !averageCommentsInput ||
+        !engagementInput
+    ) {
+
+        return;
+
+    }
+
+
+    const followers =
+        Number(followersInput.value) || 0;
+
+    const likes =
+        Number(averageLikesInput.value) || 0;
+
+    const comments =
+        Number(averageCommentsInput.value) || 0;
+
+
+    if (followers > 0) {
+
+        const engagement =
+            ((likes + comments) / followers) * 100;
+
+
+        engagementInput.value =
+            engagement.toFixed(2);
+
+    }
+
+    else {
+
+        engagementInput.value = "";
+
+    }
+
+}
+
+
+// ==========================================
+// AUTO CALCULATION EVENTS
+// ==========================================
+
+if (followersInput) {
+
+    followersInput.addEventListener(
+        "input",
+        calculateEngagement
+    );
+
+}
+
+
+if (averageLikesInput) {
+
+    averageLikesInput.addEventListener(
+        "input",
+        calculateEngagement
+    );
+
+}
+
+
+if (averageCommentsInput) {
+
+    averageCommentsInput.addEventListener(
+        "input",
+        calculateEngagement
+    );
+
+}
+
+
+// Calculate once when page loads
+calculateEngagement();
