@@ -250,7 +250,38 @@ if (detectionForm) {
 
         }
 
+// ==========================================
+// SAVE BASIC ACCOUNT DATA IMMEDIATELY
+// This ensures result.html always receives the
+// account information even before AI response.
+// ==========================================
 
+const basicAccountData = {
+    username: username,
+    followers: followers,
+    following: following,
+    posts: posts,
+    accountAge: accountAge,
+    averageLikes: averageLikes,
+    averageComments: averageComments,
+    engagement: engagement,
+    profilePicture: profilePicture,
+    bio: bio,
+    verified: verified,
+
+    prediction: "Analyzing...",
+    score: 0,
+    fakeProbability: 0,
+    genuineProbability: 0,
+    risk: "ANALYZING",
+    reasons: [],
+    databaseSaved: false
+};
+
+localStorage.setItem(
+    "selectedAccount",
+    JSON.stringify(basicAccountData)
+);
         // ==========================================
         // LOADING MESSAGE
         // ==========================================
