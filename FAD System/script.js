@@ -9,8 +9,6 @@
 
 // Backend deploy hone ke baad yahan apna Vercel Backend URL paste karna hai.
 // Example:
-// const API_BASE_URL = "https://your-backend.vercel.app";
-
 const API_BASE_URL = "https://backend-jt5daoogk-fad-system.vercel.app";
 
 
