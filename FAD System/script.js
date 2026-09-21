@@ -1364,9 +1364,22 @@ if (reasonsList) {
     reasonsList.innerHTML = "";
 
 
+    // GET SELECTED ACCOUNT SAFELY
+
+    const reasonsSavedAccount =
+        localStorage.getItem("selectedAccount");
+
+
+    const reasonsAccount =
+        reasonsSavedAccount
+            ? JSON.parse(reasonsSavedAccount)
+            : null;
+
+
     if (
-        !account.reasons ||
-        account.reasons.length === 0
+        !reasonsAccount ||
+        !reasonsAccount.reasons ||
+        reasonsAccount.reasons.length === 0
     ) {
 
         const listItem =
@@ -1381,7 +1394,7 @@ if (reasonsList) {
 
     else {
 
-        account.reasons.forEach(
+        reasonsAccount.reasons.forEach(
             function (reason) {
 
                 const listItem =
@@ -1398,8 +1411,6 @@ if (reasonsList) {
     }
 
 }
-
-
 // ==========================================
 // RESULT PAGE - CHECK ANOTHER ACCOUNT
 // ==========================================
